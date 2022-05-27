@@ -12,9 +12,10 @@ type QuizzesStorePayload struct {
 }
 
 type Result struct {
-	TotalQuestions   int `json:"total_questions"`
-	CorrectAnswers   int `json:"correct_anwsers"`
-	InCorrectAnswers int `json:"incorrect_anwsers"`
+	TotalQuestions   int     `json:"total_questions"`
+	CorrectAnswers   int     `json:"correct_anwsers"`
+	InCorrectAnswers int     `json:"incorrect_anwsers"`
+	Score            float64 `json:"score"`
 }
 
 type QuizzesStoreResponse struct {
@@ -73,6 +74,7 @@ func calculateQuizzesResult(payload *QuizzesStorePayload) (*Result, error) {
 	result.TotalQuestions = totalQuestions
 	result.CorrectAnswers = correctAnswers
 	result.InCorrectAnswers = incorrectAnswers
+	result.Score = (float64(correctAnswers) / float64(totalQuestions)) * 100
 
 	return &result, nil
 }

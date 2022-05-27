@@ -7,14 +7,40 @@
 {{ define "content" }}
      <section class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-sm-12 col-md-6 col-lg-3">
-                <h1>Quiz</h1>
+            <div class="col-sm-12 col-md-6 col-lg-3" style="text-align: center;">
+                <h1 id="page-heading">Quiz</h1>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-sm-12 col-md-8">
-                <form id="quiz-form" method="POST" enctype="multipart/form-data">
-                    <button type="submit" id="submit-button" class="btn btn-primary mt-5">Submit</button>
+                <div class="alert" role="alert" style="display: none;" id="alert"></div>
+
+                <div class="row py-4" id="result-container" style="display: none;">
+                    <div class="col-12 px-md-5 py-2">
+                        Thank you for your submission, the result will display below this message.
+                    </div>
+                    <div class="col-6 px-md-5">
+                        <p class="fw-bold mt-3">Total questions:</p>
+                        <p class="fw-bold mt-3">Correct questions:</p>
+                        <p class="fw-bold mt-3">Incorrect questions:</p>
+                        <p class="fw-bold mt-3">Your score:</p>
+                    </div>
+                    <div class="col-6 px-md-5">
+                        <p class="mt-3" id="total-questions">0</p>
+                        <p class="mt-3" id="correct-answers">0</p>
+                        <p class="mt-3" id="incorrect-answers">0</p>
+                        <p class="mt-3" id="score">0</p>
+                    </div>
+                    <div class="col-12 px-md-5"> 
+                        <a class="btn btn-sm btn-primary" href="/">Take the quiz again!</a>
+                    </div>
+                </div>
+                <form id="quiz-form" method="POST">
+                    <div class="row">
+                        <div class="col" style="text-align: center;">
+                            <button type="submit" id="submit-button" class="btn btn-success mt-5">Submit</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -30,29 +56,57 @@
                 const data = await response.json()
                 return data.questions || [];
             } catch(e) {
-
                 return [];                
             }
         }
 
+        // Send answers to the API
         async function sendAnswers(e) {
             e.preventDefault();
 
+            const quizForm = document.getElementById("quiz-form");
+            const submitButton = document.getElementById("submit-button");
+            submitButton.setAttribute("disabled", "disabled");
+
             try {
-                const quizForm = document.getElementById("quiz-form");
                 const formData = new FormData(this);
                 const response = await fetch("{{ index .ApiUrl }}/api/quizzes", {
                     method: "POST",
                     body: JSON.stringify({
                         answers: Object.fromEntries(formData.entries())
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
+                    })
                 });
+                const data = await response.json();
+
+                setTimeout(() => showQuizResult(data.result), 4000)
+                displayAlert("success", "Your quiz have been submitted. The results will be displayed i a few moment.");
             } catch (e) {
-            
+                submitButton.removeAttribute("disabled");
+                displayAlert("danger", "An error have ocurred, please contact the administrator");
             }
+        }
+
+        // Display an alert for 5 seconds
+        function displayAlert(type = "success", message = "") {
+            const alertCotainer = document.getElementById("alert");
+            alertCotainer.textContent = message;
+            alertCotainer.classList = "alert alert-" + type;
+            alertCotainer.setAttribute("style", "display: block"); 
+
+            setTimeout(() => alertCotainer.setAttribute("style", "display: none;"), 3000);
+        }
+
+
+        function showQuizResult(result) {
+            document.getElementById("quiz-form").remove();
+            document.getElementById("page-heading").textContent = "Quiz result";
+        
+
+            document.getElementById("total-questions").textContent = result.total_questions || 0;
+            document.getElementById("correct-answers").textContent = result.correct_anwsers || 0;
+            document.getElementById("incorrect-answers").textContent = result.incorrect_anwsers || 0;
+            document.getElementById("score").textContent = `${result.score || 0}%`;
+            document.getElementById("result-container").removeAttribute("style"); 
         }
 
         // Create HTML elment with the answers
@@ -73,8 +127,7 @@
                 answerField.setAttribute("type", "radio");
                 answerField.setAttribute("id", answerKey);
                 answerField.setAttribute("name", questionID);
-                answerField.setAttribute("value", keys[i]);
-                answerField.setAttribute("required", "required");
+                answerField.setAttribute("value", keys[i]);    
 
                 const answerContainer = document.createElement("div");    
                 answerContainer.className = "form-check";
