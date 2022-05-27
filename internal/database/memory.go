@@ -13,6 +13,40 @@ func NewMemoryRepository() (*MemoryRepository, error) {
 	return &MemoryRepository{}, nil
 }
 
+func (mr *MemoryRepository) GetQuizzers() ([]models.Quizzer, error) {
+	quizzer1 := models.Quizzer{
+		ID:    1,
+		Score: 75,
+	}
+
+	quizzer2 := models.Quizzer{
+		ID:    2,
+		Score: 50,
+	}
+
+	quizzer3 := models.Quizzer{
+		ID:    3,
+		Score: 50,
+	}
+
+	quizzer4 := models.Quizzer{
+		ID:    4,
+		Score: 50,
+	}
+
+	quizzer5 := models.Quizzer{
+		ID:    5,
+		Score: 25,
+	}
+
+	quizzer6 := models.Quizzer{
+		ID:    6,
+		Score: 100,
+	}
+
+	return []models.Quizzer{quizzer1, quizzer2, quizzer3, quizzer4, quizzer5, quizzer6}, nil
+}
+
 func (mr *MemoryRepository) GetQuestionByID(id int) (models.Question, error) {
 	var question models.Question
 

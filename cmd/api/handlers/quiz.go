@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"math"
 	"net/http"
 
 	"github.com/smarulanda97/assessment-golang/internal/repository"
@@ -12,10 +13,11 @@ type QuizzesStorePayload struct {
 }
 
 type Result struct {
-	TotalQuestions   int     `json:"total_questions"`
-	CorrectAnswers   int     `json:"correct_anwsers"`
-	InCorrectAnswers int     `json:"incorrect_anwsers"`
-	Score            float64 `json:"score"`
+	TotalQuestions              int     `json:"total_questions"`
+	CorrectAnswers              int     `json:"correct_anwsers"`
+	InCorrectAnswers            int     `json:"incorrect_anwsers"`
+	Score                       float64 `json:"score"`
+	ScoreComparedOthersQuizzers float64 `json:"scored_compared_others_quizzers"`
 }
 
 type QuizzesStoreResponse struct {
@@ -76,5 +78,30 @@ func calculateQuizzesResult(payload *QuizzesStorePayload) (*Result, error) {
 	result.InCorrectAnswers = incorrectAnswers
 	result.Score = (float64(correctAnswers) / float64(totalQuestions)) * 100
 
+	quizzersTotal, quizzersLessScore, err := getQuizzersWithScore(result.Score)
+	if err != nil {
+		result.ScoreComparedOthersQuizzers = 0
+	} else {
+		scoreComparedWithOthers := (float64(quizzersLessScore) / float64(quizzersTotal)) * 100
+		result.ScoreComparedOthersQuizzers = math.Round(scoreComparedWithOthers*100) / 100
+	}
+
 	return &result, nil
+}
+
+func getQuizzersWithScore(score float64) (quizzersTotal int, quizzersLessScore int, err error) {
+	quizzers, err := repository.GetQuizzers()
+	if err != nil {
+		return 0, 0, err
+	}
+
+	for _, quizzer := range quizzers {
+		if quizzer.Score <= score {
+			quizzersLessScore++
+		}
+
+		quizzersTotal++
+	}
+
+	return quizzersTotal, quizzersLessScore, nil
 }

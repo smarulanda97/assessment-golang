@@ -24,6 +24,7 @@
                         <p class="fw-bold mt-3">Correct questions:</p>
                         <p class="fw-bold mt-3">Incorrect questions:</p>
                         <p class="fw-bold mt-3">Your score:</p>
+                        <p class="fw-bold mt-3">Your score is higher than <span id="score-compared-others">0</span> of all quizzers.</p>
                     </div>
                     <div class="col-6 px-md-5">
                         <p class="mt-3" id="total-questions">0</p>
@@ -106,6 +107,7 @@
             document.getElementById("correct-answers").textContent = result.correct_anwsers || 0;
             document.getElementById("incorrect-answers").textContent = result.incorrect_anwsers || 0;
             document.getElementById("score").textContent = `${result.score || 0}%`;
+            document.getElementById("score-compared-others").textContent = `${result.scored_compared_others_quizzers || 0}%`;
             document.getElementById("result-container").removeAttribute("style"); 
         }
 

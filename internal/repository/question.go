@@ -5,6 +5,8 @@ import "github.com/smarulanda97/assessment-golang/internal/models"
 type QuestionRepository interface {
 	GetQuestions() ([]models.Question, error)
 	GetQuestionByID(id int) (models.Question, error)
+
+	GetQuizzers() ([]models.Quizzer, error)
 }
 
 var implementation QuestionRepository
@@ -19,4 +21,8 @@ func GetQuestions() ([]models.Question, error) {
 
 func GetQuestionByID(id int) (models.Question, error) {
 	return implementation.GetQuestionByID(id)
+}
+
+func GetQuizzers() ([]models.Quizzer, error) {
+	return implementation.GetQuizzers()
 }
