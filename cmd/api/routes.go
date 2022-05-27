@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/smarulanda97/assesment-golang/cmd/api/handlers"
+	"github.com/smarulanda97/assessment-golang/cmd/api/handlers"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"

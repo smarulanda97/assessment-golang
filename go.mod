@@ -1,4 +1,4 @@
-module github.com/smarulanda97/assesment-golang
+module github.com/smarulanda97/assessment-golang
 
 go 1.18
 

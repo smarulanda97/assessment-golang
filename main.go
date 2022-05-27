@@ -5,8 +5,8 @@ import (
 	"sync"
 
 	"github.com/joho/godotenv"
-	"github.com/smarulanda97/assesment-golang/cmd/api"
-	"github.com/smarulanda97/assesment-golang/cmd/web"
+	"github.com/smarulanda97/assessment-golang/cmd/api"
+	"github.com/smarulanda97/assessment-golang/cmd/web"
 )
 
 func main() {

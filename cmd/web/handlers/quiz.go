@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/smarulanda97/assesment-golang/cmd/web/render"
+	"github.com/smarulanda97/assessment-golang/cmd/web/render"
 )
 
 type QuizResponse struct {

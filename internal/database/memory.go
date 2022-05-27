@@ -3,7 +3,7 @@ package database
 import (
 	"errors"
 
-	"github.com/smarulanda97/assesment-golang/internal/models"
+	"github.com/smarulanda97/assessment-golang/internal/models"
 )
 
 type MemoryRepository struct {

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/smarulanda97/assesment-golang/internal/models"
-	"github.com/smarulanda97/assesment-golang/internal/repository"
+	"github.com/smarulanda97/assessment-golang/internal/models"
+	"github.com/smarulanda97/assessment-golang/internal/repository"
 )
 
 type QuestionsResponse struct {

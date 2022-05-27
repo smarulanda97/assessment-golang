@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/smarulanda97/assesment-golang/internal/database"
-	"github.com/smarulanda97/assesment-golang/internal/repository"
+	"github.com/smarulanda97/assessment-golang/internal/database"
+	"github.com/smarulanda97/assessment-golang/internal/repository"
 )
 
 type Config struct {

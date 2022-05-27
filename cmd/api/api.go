@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/smarulanda97/assesment-golang/internal/server"
+	"github.com/smarulanda97/assessment-golang/internal/server"
 )
 
 // StartApiServer run server with the API

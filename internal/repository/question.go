@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/smarulanda97/assesment-golang/internal/models"
+import "github.com/smarulanda97/assessment-golang/internal/models"
 
 type QuestionRepository interface {
 	GetQuestions() ([]models.Question, error)
