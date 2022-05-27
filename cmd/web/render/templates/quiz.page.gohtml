@@ -1,0 +1,107 @@
+{{ template "base" . }}
+
+{{ define "title" }}
+    Quiz about progamming
+{{ end }}
+
+{{ define "content" }}
+     <section class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <h1>Quiz</h1>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-8">
+                <form id="quiz-form">
+                    <button type="submit" class="btn btn-primary mt-5">Submit</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{{ end }}
+
+{{ define "js" }}
+    <script>
+        // Fetch questions from the API
+        async function fetchQuestions() {
+            try {
+                const response = await fetch("{{ index .ApiUrl }}/api/questions");
+                const data = await response.json()
+                return data.questions || [];
+            } catch(e) {
+
+                return [];                
+            }
+        }
+
+        // Create HTML elment with the answers
+        function createAnswersContainers(questionID, answers) {
+            const containers = [];
+
+            const keys = Object.keys(answers);
+            for (i = 0; i < keys.length; i++) {
+                const fieldID = `answer_question_${questionID}`;
+                const answerText = answers[keys[i]];
+                const answerKey = fieldID + "_option_" + keys[i];
+
+                const answerLabel = document.createElement("label");
+                answerLabel.textContent = answerText;
+                answerLabel.setAttribute("for", answerKey)
+
+                const answerField = document.createElement("input");
+                answerField.className = "form-check-input";
+                answerField.setAttribute("type", "radio");
+                answerField.setAttribute("id", answerKey);
+                answerField.setAttribute("name", fieldID);
+                answerField.setAttribute("value", keys[i]);
+                answerField.setAttribute("required", "required");
+
+                const answerContainer = document.createElement("div");    
+                answerContainer.className = "form-check";
+                answerContainer.appendChild(answerField);
+                answerContainer.appendChild(answerLabel);
+
+                containers.push(answerContainer);
+            }
+        
+            return containers;
+        }
+
+
+        // Create HTML element with the question an its possible answers
+        function createQuestionContainer(id, description, answers) {
+            const answersContainers = createAnswersContainers(id, answers);
+
+            const titleContainer = document.createElement("p");
+            titleContainer.textContent = description;
+            titleContainer.className = "fw-bold mt-3";
+
+            const subContainer = document.createElement("div");
+            subContainer.className = "col";
+            subContainer.appendChild(titleContainer);
+            answersContainers.map(answerContainer => subContainer.appendChild(answerContainer));
+
+            const mainContainer = document.createElement("div");
+            mainContainer.className = "row";
+            mainContainer.appendChild(subContainer);
+
+            return mainContainer;
+        }
+    
+        // Render questions within form
+        function renderQuestions(questions) {
+            const quizForm = document.getElementById("quiz-form");
+
+            questions.map((question) => {
+                const questionElement = createQuestionContainer(question.id, question.description, question.answers);    
+                quizForm.prepend(questionElement);
+            })
+        }
+
+        (async function() {
+            const questions = await fetchQuestions();
+            renderQuestions(questions);
+        })();
+    </script>
+{{ end }}
