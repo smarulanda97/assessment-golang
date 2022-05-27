@@ -11,8 +11,9 @@ This repository contains an API (backend) and APP (fronted).
 
 ## Requirements
 - Golang 1.18
+- Basic setup of Golang in your machine
 
-## Installation instructions
+## Installation instructions (Linux)
 - Clone this repository: `git clone git@github.com:smarulanda97/assessment-golang.git`
 - Move to folder of repository: `cd assessment-golang`
 - Copy .env.example to .env: `cp .env.example .env`
