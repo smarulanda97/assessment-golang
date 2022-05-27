@@ -20,7 +20,8 @@ func BindRoutesApi(mux *chi.Mux) http.Handler {
 	}))
 
 	mux.Route("/api", func(r chi.Router) {
-		r.Get("/questions", handlers.QuestionsIndexHandler)
+		r.Post("/quizzes", handlers.QuizStoreHandler)
+		r.Get("/questions", handlers.QuestionIndexHandler)
 	})
 
 	return mux

@@ -15,7 +15,7 @@ type QuestionsResponse struct {
 }
 
 // QuestionsIndexHandler
-func QuestionsIndexHandler(w http.ResponseWriter, r *http.Request) {
+func QuestionIndexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 

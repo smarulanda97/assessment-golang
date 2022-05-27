@@ -1,6 +1,10 @@
 package database
 
-import "github.com/smarulanda97/assesment-golang/internal/models"
+import (
+	"errors"
+
+	"github.com/smarulanda97/assesment-golang/internal/models"
+)
 
 type MemoryRepository struct {
 }
@@ -9,9 +13,26 @@ func NewMemoryRepository() (*MemoryRepository, error) {
 	return &MemoryRepository{}, nil
 }
 
+func (mr *MemoryRepository) GetQuestionByID(id int) (models.Question, error) {
+	var question models.Question
+
+	questions, err := mr.GetQuestions()
+	if err != nil {
+		return question, err
+	}
+
+	for i := range questions {
+		if questions[i].ID == int64(id) {
+			return questions[i], nil
+		}
+	}
+
+	return question, errors.New("")
+}
+
 func (mr *MemoryRepository) GetQuestions() ([]models.Question, error) {
 	question1 := models.Question{
-		Id:            1,
+		ID:            1,
 		Description:   "What are SOLID principles?",
 		CorrectAnswer: "B",
 		Answers: map[string]string{
@@ -22,7 +43,7 @@ func (mr *MemoryRepository) GetQuestions() ([]models.Question, error) {
 	}
 
 	question2 := models.Question{
-		Id:            2,
+		ID:            2,
 		Description:   "What is HTML?",
 		CorrectAnswer: "A",
 		Answers: map[string]string{
@@ -33,7 +54,7 @@ func (mr *MemoryRepository) GetQuestions() ([]models.Question, error) {
 	}
 
 	question3 := models.Question{
-		Id:            3,
+		ID:            3,
 		Description:   "What is the most used programming language for websites?",
 		CorrectAnswer: "C",
 		Answers: map[string]string{
@@ -44,7 +65,7 @@ func (mr *MemoryRepository) GetQuestions() ([]models.Question, error) {
 	}
 
 	question4 := models.Question{
-		Id:            4,
+		ID:            4,
 		Description:   "What is a queue in programming?",
 		CorrectAnswer: "A",
 		Answers: map[string]string{
